@@ -3,49 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🛡️ 철벽등기 - 부동산 AI 방패</title>
+    <title>🛡️ 철벽등기 | 부동산 AI 방패</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🛡️ 철벽등기</h1>
-            <p>전세사기 방지를 위한 부동산 검증 AI</p>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo">🛡️ <span>철벽등기</span></div>
+            <p class="subtitle">사기꾼의 꼼수를 막는 강력한 AI 방패</p>
         </header>
 
-        <div class="card config">
-            <input type="text" id="serverUrl" placeholder="ngrok 주소를 입력하세요">
-        </div>
+        <nav class="stepper">
+            <div class="step active" id="s1">1. 업로드</div>
+            <div class="step" id="s2">2. 검수</div>
+            <div class="step" id="s3">3. 분석</div>
+        </nav>
 
-        <div id="step1" class="card">
-            <h3>📸 1단계: 문서 업로드</h3>
-            <div class="upload-area">
-                <label for="imageInput" class="btn-upload">파일 선택 또는 촬영</label>
-                <input type="file" id="imageInput" accept="image/*" capture="environment">
-                <p id="fileName">이미지를 업로드해주세요.</p>
-            </div>
-            <button id="ocrBtn" class="btn-primary" disabled>텍스트 추출하기</button>
-        </div>
+        <details class="config-details">
+            <summary>⚙️ 서버 연결 설정</summary>
+            <input type="text" id="serverUrl" placeholder="ngrok 주소를 입력하세요 (https://...)">
+        </details>
 
-        <div id="step2" class="card hidden">
-            <h3>📝 2단계: 내용 검수 및 수정</h3>
-            <p class="guide">사진과 비교하여 틀린 글자가 있다면 직접 수정해주세요.</p>
-            <textarea id="editableText" spellcheck="false"></textarea>
-            <button id="analyzeBtn" class="btn-primary">최종 AI 정밀 분석 🛡️</button>
-        </div>
+        <main class="content-area">
+            <section id="step1" class="fade-in">
+                <div class="glass-card upload-zone" id="dropZone">
+                    <div class="icon-circle">📸</div>
+                    <h3>문서 촬영 및 업로드</h3>
+                    <p>등기부등본이나 계약서 사진을 올려주세요.</p>
+                    <label for="imageInput" class="btn-gradient">파일 선택하기</label>
+                    <input type="file" id="imageInput" accept="image/*" capture="environment">
+                    <p id="fileName" class="file-name-text"></p>
+                </div>
+                <button id="ocrBtn" class="btn-main" disabled>텍스트 추출 시작 ➔</button>
+            </section>
 
-        <div id="step3" class="card hidden">
-            <div id="statusBadge" class="badge">분석 완료</div>
-            <div class="report-box">
-                <h3>🔍 최종 분석 리포트</h3>
-                <div id="analysisResult"></div>
-            </div>
-            <button onclick="location.reload()" class="btn-secondary">처음으로</button>
-        </div>
+            <section id="step2" class="hidden fade-in">
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3>📝 내용 검수</h3>
+                        <span class="badge-info">수정 가능</span>
+                    </div>
+                    <p class="guide">AI가 읽은 내용입니다. 실제 문서와 대조해 보세요.</p>
+                    <textarea id="editableText" spellcheck="false"></textarea>
+                </div>
+                <button id="analyzeBtn" class="btn-main">AI 정밀 분석 요청 🛡️</button>
+                <button class="btn-text" onclick="location.reload()">처음으로 돌아가기</button>
+            </section>
+
+            <section id="step3" class="hidden fade-in">
+                <div class="glass-card result-card">
+                    <div class="result-header">
+                        <div id="statusBadge" class="status-badge">분석 완료</div>
+                        <h3>AI 철벽 분석 리포트</h3>
+                    </div>
+                    <div id="analysisResult" class="report-content"></div>
+                </div>
+                <button onclick="location.reload()" class="btn-main">새로운 문서 분석하기</button>
+            </section>
+        </main>
 
         <div id="loading" class="hidden">
-            <div class="spinner"></div>
-            <p>AI가 분석 중입니다...</p>
+            <div class="loader-box">
+                <div class="spinner"></div>
+                <p>RTX 5080이 철벽 분석 중...</p>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
