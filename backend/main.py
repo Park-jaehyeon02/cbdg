@@ -9,6 +9,7 @@ import uvicorn
 
 app = FastAPI()
 
+# 프론트엔드 연동을 위한 CORS 설정
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,21 +19,22 @@ app.add_middleware(
 )
 
 
-# 데이터 모델 정의 (유니코드 에러 방지)
+# 데이터 모델 정의 (JSON 파싱 에러 방지)
 class AnalysisRequest(BaseModel):
     text: str
 
 
-print("🚀 RTX 5080 서버 가동 중 (EasyOCR CPU Mode)")
+# 엔진 초기화 (RTX 5080 호환성을 위해 우선 CPU 모드로 설정)
+print("🚀 철벽등기 엔진 가동 중...")
 reader = easyocr.Reader(['ko', 'en'], gpu=False)
 
 
 @app.get("/")
 def home():
-    return {"status": "online"}
+    return {"status": "online", "device": "RTX 5080 Ready"}
 
 
-# [1단계] 이미지에서 텍스트 추출 (FormData로 파일을 받음)
+# [1단계] 이미지 업로드 -> 텍스트 추출 (OCR)
 @app.post("/ocr")
 async def get_ocr_text(file: UploadFile = File(...)):
     try:
@@ -44,24 +46,34 @@ async def get_ocr_text(file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail="이미지를 읽을 수 없습니다.")
 
         results = reader.readtext(image)
+        # 줄바꿈을 포함하여 가독성 있게 텍스트 결합
         full_text = "\n".join([res[1] for res in results])
+
         return {"extracted_text": full_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# [2단계] 수정된 텍스트 분석 (JSON으로 텍스트를 받음)
+# [2단계] 사용자가 수정한 텍스트 분석 (LLM)
 @app.post("/analyze")
-async def analyze_final(request: AnalysisRequest):  # BaseModel 적용
+async def analyze_final(request: AnalysisRequest):
     user_text = request.text
 
     if not user_text.strip():
         return {"analysis": "분석할 내용이 없습니다. 텍스트를 입력해주세요."}
 
-    prompt = f"부동산 전문가로서 다음 내용을 분석해 🟢안전/🟡주의/🔴위험 등급을 매겨줘:\n{user_text}"
+    # RTX 5080의 성능을 활용한 정밀 분석 프롬프트
+    prompt = f"""
+    당신은 부동산 전문 AI '철벽등기'입니다. 
+    사용자가 검수한 다음 텍스트에서 전세사기 위험(신탁, 근저당, 압류 등)을 분석하세요.
+    반드시 🟢안전 / 🟡주의 / 🔴위험 등급을 먼저 표시하고 상세 이유를 설명하세요.
+    ---
+    분석할 내용:
+    {user_text}
+    """
 
     try:
-        # Ollama API 호출
+        # 로컬 Ollama 서버 호출
         response = requests.post(
             "http://localhost:11434/api/generate",
             json={"model": "llama3.1", "prompt": prompt, "stream": False},

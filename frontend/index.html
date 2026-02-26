@@ -10,41 +10,42 @@
     <div class="container">
         <header>
             <h1>🛡️ 철벽등기</h1>
-            <p>사기꾼의 꼼수를 꿰뚫는 AI 부동산 검람기</p>
+            <p>사기꾼의 꼼수를 꿰뚫는 부동산 검증 AI</p>
         </header>
 
-        <section class="config">
-            <input type="text" id="serverUrl" placeholder="ngrok 주소를 입력하세요 (https://...)">
-        </section>
+        <div class="card config">
+            <input type="text" id="serverUrl" placeholder="ngrok 주소를 입력하세요">
+        </div>
 
-        <section id="uploadSection" class="card">
-            <div class="upload-box">
-                <label for="imageInput" class="btn-upload">📸 문서 촬영 / 업로드</label>
+        <div id="step1" class="card">
+            <h3>📸 1단계: 문서 업로드</h3>
+            <div class="upload-area">
+                <label for="imageInput" class="btn-upload">파일 선택 또는 촬영</label>
                 <input type="file" id="imageInput" accept="image/*" capture="environment">
-                <p id="fileName">선택된 파일 없음</p>
+                <p id="fileName">이미지를 업로드해주세요.</p>
             </div>
             <button id="ocrBtn" class="btn-primary" disabled>텍스트 추출하기</button>
-        </section>
+        </div>
 
-        <section id="editSection" class="card hidden">
-            <h3>📝 1단계: 내용 확인 및 수정</h3>
-            <p class="guide">오타가 있다면 실제 문서와 똑같이 수정해주세요.</p>
-            <textarea id="editableText"></textarea>
-            <button id="analyzeBtn" class="btn-primary">최종 AI 정밀 분석 시작 🛡️</button>
-        </section>
+        <div id="step2" class="card hidden">
+            <h3>📝 2단계: 내용 검수 및 수정</h3>
+            <p class="guide">사진과 비교하여 틀린 글자가 있다면 직접 수정해주세요.</p>
+            <textarea id="editableText" spellcheck="false"></textarea>
+            <button id="analyzeBtn" class="btn-primary">최종 AI 정밀 분석 🛡️</button>
+        </div>
 
-        <section id="resultSection" class="card hidden">
+        <div id="step3" class="card hidden">
             <div id="statusBadge" class="badge">분석 완료</div>
             <div class="report-box">
-                <h3>🔍 2단계: AI 철벽 리포트</h3>
+                <h3>🔍 최종 분석 리포트</h3>
                 <div id="analysisResult"></div>
             </div>
-            <button onclick="location.reload()" class="btn-secondary">다시 시작하기</button>
-        </section>
+            <button onclick="location.reload()" class="btn-secondary">처음으로</button>
+        </div>
 
         <div id="loading" class="hidden">
             <div class="spinner"></div>
-            <p>데이터를 처리 중입니다...</p>
+            <p>AI가 분석 중입니다...</p>
         </div>
     </div>
     <script src="script.js"></script>
