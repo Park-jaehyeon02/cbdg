@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ 철벽등기 - 부동산 AI 방패</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ 철벽등기</h1>
+            <p>사기꾼의 꼼수가 통하지 않는 부동산 방어 AI</p>
+        </header>
+
+        <main>
+            <div class="config-section">
+                <input type="text" id="serverUrl" placeholder="ngrok 주소를 입력하세요 (예: https://abcd.ngrok-free.app)">
+            </div>
+
+            <div class="upload-section">
+                <label for="imageInput" class="custom-file-upload">
+                    📸 문서 촬영 및 업로드
+                </label>
+                <input type="file" id="imageInput" accept="image/*" capture="environment">
+                <div id="fileName"></div>
+            </div>
+
+            <button id="analyzeBtn" disabled>AI 철벽 분석 시작</button>
+
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p>RTX 5080이 문서를 정밀 분석 중입니다...</p>
+            </div>
+
+            <div id="resultSection" class="hidden">
+                <div id="statusBadge" class="badge">계산 중...</div>
+                <div class="report-box">
+                    <h3>🔍 AI 분석 리포트</h3>
+                    <div id="analysisResult"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

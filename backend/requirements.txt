@@ -1,0 +1,13 @@
+# Web Framework
+fastapi
+uvicorn
+python-multipart
+
+# AI & OCR (GPU Accelerated)
+paddlepaddle-gpu  # CUDA 환경용 GPU 버전
+paddleocr
+opencv-python     # GPU 환경에서는 전체 패키지 사용 권장
+requests
+
+# Utilities
+pydantic

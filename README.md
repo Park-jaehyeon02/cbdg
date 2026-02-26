@@ -82,6 +82,12 @@
 
 ## 7. 설치 및 실행 방법 🚀
 
+# 필수 라이브러리 설치
+pip install -r requirements.txt
+
+# PaddleOCR GPU 작동 테스트
+python -c "from paddleocr import PaddleOCR; ocr = PaddleOCR(use_gpu=True, lang='korean'); print('🚀 GPU OCR Ready!')"
+
 ### 요구 사항
 * Python 3.10+
 * [Ollama](https://ollama.com/) 설치 및 `llama3.1` 모델 다운로드 (`ollama run llama3.1`)
